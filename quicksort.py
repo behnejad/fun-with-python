@@ -1,4 +1,14 @@
 import random
+import time
+
+def delta(func):
+    def wrap(*x):
+        a = time.time()
+        res = func(*x)
+        print(time.time() - a)
+        return res
+
+    return wrap
 
 def qsort(array):
     if len(array) == 1 or len(array) == 0:
@@ -27,10 +37,17 @@ def qsort(array):
     arr2 = qsort(arr2)
     return [*arr1, *arr3, *arr2]
 
+@delta
+def mysort(x):
+    return qsort(x)
+
+@delta
+def defsort(x):
+    return sorted(x)
 
 def test(array):
-    t = qsort(array)
-    s = sorted(array)
+    t = mysort(array)
+    s = defsort(array)
     #print(t)
     #print(s)
     print(t == s)
@@ -44,4 +61,4 @@ if __name__ == '__main__':
     test([10, 9, 7, 6, 1, 0, 6, 5, 4, 3, 10, 22])
     test([0, 1, 0, 0, 0, 0, 5])
     for _ in range(100):
-        test([random.randint(-20, +100) for _ in range(random.randint(1, 100))])
+        test([random.randint(-10000, 10000) for _ in range(random.randint(1, 10000))])
